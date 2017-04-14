@@ -6,7 +6,7 @@ import math
 def load_data(func):
     def wrapped(filepath, *args):
         try:
-            with open(filepath, 'r') as file_handler:
+            with open(filepath, 'r', encoding='windows-1251') as file_handler:
                 content_json = json.load(file_handler)
                 sorted_by_seats = sorted(content_json,
                                          key=lambda seats: seats['SeatsCount'])
@@ -48,20 +48,20 @@ def select_action_to_do():
 def get_biggest_bar(sorted_by_seats):
     last_bar_in_list = len(sorted_by_seats)
     biggest_bar = sorted_by_seats[last_bar_in_list - 1]
-    print('Список самых больших баров:')
+    print('List of biggest bars:')
     for bar in sorted_by_seats:
         if bar['SeatsCount'] == biggest_bar['SeatsCount']:
-            print('%s имеет %s мест в зале.'
+            print('%s has %s seats in saloon.'
                   % (bar['Name'], bar['SeatsCount']))
 
 
 @load_data
 def get_smallest_bar(sorted_by_seats):
     smallest_bar = sorted_by_seats[0]
-    print('Cписок самых маленьких баров:')
+    print('List of smallest bars:')
     for bar in sorted_by_seats:
         if bar['SeatsCount'] == smallest_bar['SeatsCount']:
-            print('%s имеет %s мест в зале.'
+            print('%s has %s seats in saloon.'
                   % (bar['Name'], bar['SeatsCount']))
 
 
@@ -78,7 +78,7 @@ def get_closest_bar(sorted_by_seats, longitude, latitude):
         coords_list.append(bar['Address'])
     nearest_bar_coord = min(coords_list[::3])
     positiion_in_bar_coord_list = coords_list.index(nearest_bar_coord)
-    print("Бар %s находится ближе всего к вам. Адрес: %s" % (
+    print("%s is closest to you. Address: %s" % (
         coords_list.pop(positiion_in_bar_coord_list + 1),
         coords_list.pop(positiion_in_bar_coord_list + 1)))
 
