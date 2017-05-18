@@ -11,8 +11,9 @@ def load_data(func):
                 sorted_by_seats = sorted(content_json,
                                          key=lambda seats: seats['SeatsCount'])
                 func(sorted_by_seats, *args)
-        except ValueError as error:
-            print('Error!Check JSON file content!\n', error)
+        except Exception as error:
+            print(error, '\nCheck JSON file content and way to file!')
+
     return wrapped
 
 
@@ -65,22 +66,15 @@ def get_closest_bar(sorted_by_seats):
 
 if __name__ == '__main__':
     input_path = input('Please enter way to JSON file: ')
-    if os.path.exists(input_path):
-        select_action = input('Please select what you want to do: '
-                              '\n 1)Find smallest bar. '
-                              '\n 2)Find biggest bar. '
-                              '\n 3)Find closest bar. ')
-        if select_action == '1':
-            get_smallest_bar(input_path)
-        elif select_action == '2':
-            get_biggest_bar(input_path)
-        elif select_action == '3':
-            try:
-                get_closest_bar(input_path)
-            except ValueError:
-                print('Incorrect longitude and latitude! '
-                      'Enter correct values.')
-        else:
-            print("Error! Type correct variant!")
+    select_action = input('Please select what you want to do: '
+                          '\n 1)Find smallest bar. '
+                          '\n 2)Find biggest bar. '
+                          '\n 3)Find closest bar. ')
+    if select_action == '1':
+        get_smallest_bar(input_path)
+    elif select_action == '2':
+        get_biggest_bar(input_path)
+    elif select_action == '3':
+        get_closest_bar(input_path)
     else:
-        print('Incorrect directory! Check way!')
+        print("Error! Type correct variant!")
