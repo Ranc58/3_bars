@@ -1,8 +1,8 @@
-# Ближайшие бары
+# Closest bars
+This program displays largest and smallest bars by quantity of seats. And can
+find closest to you bar, using coordinates.
 
-[FIXME. Здесь будет описание проекта]
-
-# Как запустить
+# Quick launch
 
 Script needs to work installed interpretatior Python 3.5+
 
@@ -49,6 +49,6 @@ Please select what you want to do:
 
 Launching on Win is same
 
-# Цели проекта
+# Project Goals
 
-Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
+The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
