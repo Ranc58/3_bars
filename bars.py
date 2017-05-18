@@ -46,7 +46,7 @@ def get_closest_bar(sorted_by_seats):
     except ValueError:
         print('Incorrect longitude and latitude! Enter correct values.')
     else:
-        SHIFT_ON_LIST = 1
+        shift_on_list = 1
         coords_list = []
         for bar in sorted_by_seats:
             diff_of_coords = math.sqrt((my_coord[0][0] -
@@ -59,8 +59,8 @@ def get_closest_bar(sorted_by_seats):
         nearest_bar_coord = min(coords_list[::3])
         positiion_in_bar_coord_list = coords_list.index(nearest_bar_coord)
         print("%s is closest to you. Address: %s" % (
-            coords_list.pop(positiion_in_bar_coord_list + SHIFT_ON_LIST),
-            coords_list.pop(positiion_in_bar_coord_list + SHIFT_ON_LIST)))
+            coords_list.pop(positiion_in_bar_coord_list + shift_on_list),
+            coords_list.pop(positiion_in_bar_coord_list + shift_on_list)))
 
 
 if __name__ == '__main__':
