@@ -1,51 +1,45 @@
-import os
 import json
 import math
 
 
-def load_data(func):
-    def wrapped(filepath, *args):
-        try:
-            with open(filepath, 'r', encoding='windows-1251') as file_handler:
-                content_json = json.load(file_handler)
-                sorted_by_seats = sorted(content_json,
-                                         key=lambda seats: seats['SeatsCount'])
-                func(sorted_by_seats, *args)
-        except Exception as error:
-            print(error, '\nCheck JSON file content and way to file!')
-
-    return wrapped
-
-
-@load_data
-def get_biggest_bar(sorted_by_seats):
-    last_bar_in_list = len(sorted_by_seats)
-    biggest_bar = sorted_by_seats[last_bar_in_list - 1]
-    print('List of biggest bars:')
-    for bar in sorted_by_seats:
-        if bar['SeatsCount'] == biggest_bar['SeatsCount']:
-            print('%s has %s seats in saloon.'
-                  % (bar['Name'], bar['SeatsCount']))
-
-
-@load_data
-def get_smallest_bar(sorted_by_seats):
-    smallest_bar = sorted_by_seats[0]
-    print('List of smallest bars:')
-    for bar in sorted_by_seats:
-        if bar['SeatsCount'] == smallest_bar['SeatsCount']:
-            print('%s has %s seats in saloon.'
-                  % (bar['Name'], bar['SeatsCount']))
-
-
-@load_data
-def get_closest_bar(sorted_by_seats):
+def load_data_output_content(filepath):
     try:
-        longitude = input('Please enter Yours longitude: ')
-        latitude = input('Please enter Yours latitude: ')
+        with open(filepath, 'r', encoding='windows-1251') as file_handler:
+            return json.load(file_handler)
+    except FileNotFoundError as error:
+        print(error, '\nIncorrect way to JSON file! Check it.')
+
+
+def sort_content(content):
+    try:
+        sorted_by_seats = sorted(content,
+                                 key=lambda seats: seats['SeatsCount'])
+        return sorted_by_seats
+    except Exception:
+        print('Incorrect JSON file! Check it.')
+
+
+def get_biggest_bar(sorted_by_seats):
+    list_bars_seats = []
+    for bar in sorted_by_seats:
+        list_bars_seats.append((bar['SeatsCount'], bar['Name']))
+    smallest_bar = max(list_bars_seats)
+    print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
+
+
+def get_smallest_bar(sorted_by_seats):
+    list_bars_seats = []
+    for bar in sorted_by_seats:
+        list_bars_seats.append((bar['SeatsCount'], bar['Name']))
+    smallest_bar = min(list_bars_seats)
+    print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
+
+
+def get_closest_bar(sorted_by_seats, longitude, latitude):
+    try:
         my_coord = [[float(longitude), float(latitude)]]
     except ValueError:
-        print('Incorrect longitude and latitude! Enter correct values.')
+        print('Error! Incorrect longitude and latitude! Enter correct values.')
     else:
         shift_on_list = 1
         coords_list = []
@@ -66,15 +60,15 @@ def get_closest_bar(sorted_by_seats):
 
 if __name__ == '__main__':
     input_path = input('Please enter way to JSON file: ')
-    select_action = input('Please select what you want to do: '
-                          '\n 1)Find smallest bar. '
-                          '\n 2)Find biggest bar. '
-                          '\n 3)Find closest bar. ')
-    if select_action == '1':
-        get_smallest_bar(input_path)
-    elif select_action == '2':
-        get_biggest_bar(input_path)
-    elif select_action == '3':
-        get_closest_bar(input_path)
-    else:
-        print("Error! Type correct variant!")
+    content = load_data_output_content(input_path)
+    if content:
+        longitude = input('Please enter Yours longitude: ')
+        latitude = input('Please enter Yours latitude: ')
+        sorted_by_seats = sort_content(content)
+        if sorted_by_seats:
+            print('Biggest bar: ')
+            get_biggest_bar(sorted_by_seats)
+            print('Smallest bar: ')
+            get_smallest_bar(sorted_by_seats)
+            print('Closest bar: ')
+            get_closest_bar(sorted_by_seats, longitude, latitude)
