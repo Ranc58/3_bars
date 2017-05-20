@@ -6,31 +6,29 @@ def load_data_output_content(filepath):
     try:
         with open(filepath, 'r', encoding='windows-1251') as file_handler:
             return json.load(file_handler)
-    except FileNotFoundError as error:
-        print(error, '\nIncorrect way to JSON file! Check it.')
+    except (ValueError, FileNotFoundError) as error:
+        print(error, '\nIncorrect way or JSON file! Check it.')
 
 
 def sort_content(content):
-    try:
-        sorted_by_seats = sorted(content,
-                                 key=lambda seats: seats['SeatsCount'])
-        return sorted_by_seats
-    except Exception:
-        print('Incorrect JSON file! Check it.')
+    sorted_by_seats = sorted(content,
+                             key=lambda seats: seats['SeatsCount'])
+    return sorted_by_seats
 
 
-def get_biggest_bar(sorted_by_seats):
+def list_bars_seats(sorted_by_seats):
     list_bars_seats = []
     for bar in sorted_by_seats:
         list_bars_seats.append((bar['SeatsCount'], bar['Name']))
+    return list_bars_seats
+
+
+def get_biggest_bar(list_bars_seats):
     smallest_bar = max(list_bars_seats)
     print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
 
 
-def get_smallest_bar(sorted_by_seats):
-    list_bars_seats = []
-    for bar in sorted_by_seats:
-        list_bars_seats.append((bar['SeatsCount'], bar['Name']))
+def get_smallest_bar(list_bars_seats):
     smallest_bar = min(list_bars_seats)
     print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
 
@@ -64,11 +62,12 @@ if __name__ == '__main__':
     if content:
         longitude = input('Please enter Yours longitude: ')
         latitude = input('Please enter Yours latitude: ')
-        sorted_by_seats = sort_content(content)
-        if sorted_by_seats:
+        sort_content = sort_content(content)
+        list_bars_seats = list_bars_seats(sort_content)
+        if list_bars_seats:
             print('Biggest bar: ')
-            get_biggest_bar(sorted_by_seats)
+            get_biggest_bar(list_bars_seats)
             print('Smallest bar: ')
-            get_smallest_bar(sorted_by_seats)
+            get_smallest_bar(list_bars_seats)
             print('Closest bar: ')
-            get_closest_bar(sorted_by_seats, longitude, latitude)
+            get_closest_bar(sort_content, longitude, latitude)
