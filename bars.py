@@ -44,7 +44,7 @@ def get_closest_bar(closest_bar):
           (closest_bar['Name'], closest_bar['Address']))
 
 
-if __name__ == '__main__':  # TODO Изменить входные параметры!
+if __name__ == '__main__':
     input_path = input('Please enter way to JSON file: ')
     content = load_data_output_content(input_path)
     if content:
