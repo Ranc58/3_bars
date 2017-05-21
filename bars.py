@@ -10,64 +10,51 @@ def load_data_output_content(filepath):
         print(error, '\nIncorrect way or JSON file! Check it.')
 
 
-def sort_content(content):
-    sorted_by_seats = sorted(content,
-                             key=lambda seats: seats['SeatsCount'])
-    return sorted_by_seats
+def get_biggest_bar(content):
+    biggest_bar = max(content, key=lambda seats: seats['SeatsCount'])
+    print('%s has %s seats in saloon.\n' %
+          (biggest_bar['Name'], biggest_bar['SeatsCount']))
 
 
-def list_bars_seats(sorted_by_seats):
-    list_bars_seats = []
-    for bar in sorted_by_seats:
-        list_bars_seats.append((bar['SeatsCount'], bar['Name']))
-    return list_bars_seats
+def get_smallest_bar(content):
+    smallest_bar = min(content, key=lambda seats: seats['SeatsCount'])
+    print('%s has %s seats in saloon.\n' %
+          (smallest_bar['Name'], smallest_bar['SeatsCount']))
 
 
-def get_biggest_bar(list_bars_seats):
-    smallest_bar = max(list_bars_seats)
-    print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
-
-
-def get_smallest_bar(list_bars_seats):
-    smallest_bar = min(list_bars_seats)
-    print('%s has %s seats in saloon.\n' % (smallest_bar[1], smallest_bar[0]))
-
-
-def get_closest_bar(sorted_by_seats, longitude, latitude):
+def closest_bar(content, longitude, latitude):
     try:
         my_coord = [[float(longitude), float(latitude)]]
     except ValueError:
         print('Error! Incorrect longitude and latitude! Enter correct values.')
     else:
-        shift_on_list = 1
-        coords_list = []
-        for bar in sorted_by_seats:
+        for bar in content:
             diff_of_coords = math.sqrt((my_coord[0][0] -
                                         bar['geoData']['coordinates'][0])**2 +
                                        ((my_coord[0][1] -
                                          bar['geoData']['coordinates'][1])**2))
-            coords_list.append(diff_of_coords)
-            coords_list.append(bar['Name'])
-            coords_list.append(bar['Address'])
-        nearest_bar_coord = min(coords_list[::3])
-        positiion_in_bar_coord_list = coords_list.index(nearest_bar_coord)
-        print("%s is closest to you. Address: %s" % (
-            coords_list.pop(positiion_in_bar_coord_list + shift_on_list),
-            coords_list.pop(positiion_in_bar_coord_list + shift_on_list)))
+            bar['geoData']['coordinates'] = diff_of_coords
+        closest_bar = min(content, key=lambda coords:
+                          coords['geoData']['coordinates'])
+        return closest_bar
 
 
-if __name__ == '__main__':
+def get_closest_bar(closest_bar):
+    print("%s is closest to you. Address: %s" %
+          (closest_bar['Name'], closest_bar['Address']))
+
+
+if __name__ == '__main__':  # TODO Изменить входные параметры!
     input_path = input('Please enter way to JSON file: ')
     content = load_data_output_content(input_path)
     if content:
-        longitude = input('Please enter Yours longitude: ')
-        latitude = input('Please enter Yours latitude: ')
-        sort_content = sort_content(content)
-        list_bars_seats = list_bars_seats(sort_content)
-        if list_bars_seats:
-            print('Biggest bar: ')
-            get_biggest_bar(list_bars_seats)
-            print('Smallest bar: ')
-            get_smallest_bar(list_bars_seats)
-            print('Closest bar: ')
-            get_closest_bar(sort_content, longitude, latitude)
+        longitude = input("Please enter longitude: ")
+        latitude = input('Please enter latitude: ')
+        print('Biggest bar: ')
+        get_biggest_bar(content)
+        print('Smallest bar: ')
+        get_smallest_bar(content)
+        print('Closest bar: ')
+        closest_bar = closest_bar(content, longitude, latitude)
+        if closest_bar:
+            get_closest_bar(closest_bar)
