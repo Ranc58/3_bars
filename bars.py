@@ -41,22 +41,23 @@ def print_biggest_bar(biggest_bar):
 
 def print_closest_bar(closest_bar):
     print("%s is closest to you. Address: %s" %
-          (closest_bar['Name'], closest_bar['Address']))
+        (closest_bar['Name'], closest_bar['Address']))
 
 
 if __name__ == '__main__':
     input_path = input('Please enter way to JSON file: ')
     try:
         content = load_data_output_content(input_path)
-        longitude = input("Please enter longitude: ")
-        latitude = input('Please enter latitude: ')
+        longitude = float(input("Please enter longitude: "))
+        latitude = float(input('Please enter latitude: '))
+    except (ValueError, FileNotFoundError):
+        print('Error! Check input information and JSON file for correctness.')
+    else:
         smallest_bar = get_smallest_bar(content)
         print_smallest_bar(smallest_bar)
         biggest_bar = get_biggest_bar(content)
         print_biggest_bar(biggest_bar)
         print('Closest_bar: ')
         closest_bar = get_closest_bar(content,
-                                      float(longitude), float(latitude))
+                                      longitude, latitude)
         print_closest_bar(closest_bar)
-    except (ValueError, FileNotFoundError):
-        print('Error! Check input information and JSON file for correctness.')
