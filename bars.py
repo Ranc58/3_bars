@@ -20,9 +20,9 @@ def get_biggest_bar(content):
 def get_closest_bar(content, longitude, latitude):
     for bar in content:
         diff_of_coords = math.sqrt((longitude -
-                                    bar['geoData']['coordinates'][0])**2 +
+                                    bar['geoData']['coordinates'][0]) ** 2 +
                                    ((latitude -
-                                     bar['geoData']['coordinates'][1])**2))
+                                     bar['geoData']['coordinates'][1]) ** 2))
         bar['geoData']['coordinates'] = diff_of_coords
     closest_bar = min(content,
                       key=lambda coords: coords['geoData']['coordinates'])
@@ -41,7 +41,7 @@ def print_biggest_bar(biggest_bar):
 
 def print_closest_bar(closest_bar):
     print("%s is closest to you. Address: %s" %
-        (closest_bar['Name'], closest_bar['Address']))
+          (closest_bar['Name'], closest_bar['Address']))
 
 
 if __name__ == '__main__':
@@ -58,6 +58,4 @@ if __name__ == '__main__':
         biggest_bar = get_biggest_bar(content)
         print_biggest_bar(biggest_bar)
         print('Closest_bar: ')
-        closest_bar = get_closest_bar(content,
-                                      longitude, latitude)
         print_closest_bar(closest_bar)
