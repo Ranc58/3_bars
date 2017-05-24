@@ -40,7 +40,7 @@ def print_biggest_bar(biggest_bar):
 
 
 def print_closest_bar(closest_bar):
-    print("%s is closest to you. Address: %s" %
+    print("Closest bar: \n%s is closest to you. Address: %s" %
           (closest_bar['Name'], closest_bar['Address']))
 
 
@@ -57,6 +57,5 @@ if __name__ == '__main__':
         print_smallest_bar(smallest_bar)
         biggest_bar = get_biggest_bar(content)
         print_biggest_bar(biggest_bar)
-        print('Closest_bar: ')
         closest_bar = get_closest_bar(content, longitude, latitude)
         print_closest_bar(closest_bar)
