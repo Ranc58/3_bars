@@ -58,5 +58,5 @@ if __name__ == '__main__':
         biggest_bar = get_biggest_bar(content)
         print_biggest_bar(biggest_bar)
         print('Closest_bar: ')
-        closest_bar=get_closest_bar(content,longitude,latitude)
+        closest_bar = get_closest_bar(content, longitude, latitude)
         print_closest_bar(closest_bar)
